@@ -8,14 +8,14 @@ ark-leaf是ark系列框架中的分布式ID服务，基于美团leaf组件开发
 # 3.功能增强列表
 - 增加了对dubbo协议的支持，可同时提供http和dubbo两种服务；
 - fix官方原版读取DB失败的问题；
-- snowflake部分不在依赖zookeeper，改为依赖nacos。
-- 本地配置信息（如dubbo，mysql连接池，leaf自身配置等）从nacos配置中心读，不在读本地配置文件。
-# 4.ark-leaf服务启动
+- snowflake生成workid部分不在依赖zookeeper，改为依赖nacos。
+- 配置信息（如dubbo，mysql连接池，leaf自身配置等）改为从nacos配置中心读，不再读本地配置文件。
+# 4.ark-leaf服务如何启动？
 > 1. 修改配置文件中config/application.properties，bootstrap.properties的spring.cloud.nacos.config.server-addr地址为nacos地址。
 > 2. 复制script文件夹下的ark-leaf-dev.properties到，nacos的public namespace下面的ark-leaf-dev.properties。
 > 3. 导入script文件下的sql到数据库。
 > 4. LeafServerApplication.java 启动服务。
-# 5.为什么leaf改造使用nacos生成workerID？
+# 5.为什么leaf要改造使用nacos生成workerID？
 dubbo使用nacos注册中心，不需要为了生成workid而单独维护一套zookeeper。 
 
 <br/>其他生成workerID的方式：
@@ -25,7 +25,7 @@ dubbo使用nacos注册中心，不需要为了生成workid而单独维护一套z
 >   - b. 在redis中设置一个数组,在redis中初始化一个类型为boolean的长度为1024的数组，默认全部为true。在服务启动时循环数组，得到第一个为true的元素下标并将其设为false，这步操作是原子性的，并在服务停止之前使用@PreDestroy注解标注方法，在服务摧毁之前根据 workerID恢复数组对应的元素为true。
 >     - 问题：该方案解决了上面workerid无法复用的问题，但在测试下如果服务进程是被kill时无法执行@PreDestroy注解标注方法，即无法恢复false为true。
 > 2. 使用IP取余，当我们每台机器都仅部署一台leaf服务时，可以根据IP去计算workerID。
->   - 问题：因为workerid不能超过1023，所以对ip转换成byte后得到ascii码总和进行1024取余，还是可能导致workerid重复问题。
+>    - 问题：因为workerid不能超过1023，所以对ip转换成byte后得到ascii码总和进行1024取余，还是可能导致workerid重复问题。
 > 3. 使用nacos
 >   - a. 获取nacos所有leaf实例，循环获取下标索引作为workerId
 >     问题：
