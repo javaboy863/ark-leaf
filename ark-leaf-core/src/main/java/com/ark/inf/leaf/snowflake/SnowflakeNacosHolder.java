@@ -33,7 +33,7 @@ public class SnowflakeNacosHolder {
     private String ip  = Utils.getIp();
     private int port = Integer.parseInt(NacosConfig.getSpringConfig(Constants.LEAF_SNOWFLAKE_PORT, "true"));
 
-    private String serviceName = "arch-leaf-snowflake";
+    private String serviceName = "ark-leaf-snowflake";
     private String serviceGroup = "SNOWFLAKE_NODE_GROUP";
 
     private long lastUpdateTime;
