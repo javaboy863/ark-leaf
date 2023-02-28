@@ -2,23 +2,22 @@
 &emsp;&emsp;ark-leaf是ark系列框架中的分布式ID服务，基于美团leaf组件开发，在leaf服务的基础上做了功能的增强。
 # 2.ark-leaf解决了什么问题？
 &emsp;&emsp;用于生成全局唯一ID，在互联网应用中，某个表可能要占用很大的物理存储空间，为了解决该问题，使用数据库分片技术。将一个数据库进行拆分，通过数据库中间件连接。如果数据库中该表选用ID自增策略，则可能产生重复的ID，此时应该使用分布式ID生成策略来生成全局唯一的ID。
-
-# 2.使用场景
+# 3.使用场景
 - 订单号生成场景;
 - 生成业务主键ID的场景;
 - 生成MQ message ID的场景;
 - 新旧服务数据合并期,使用同一个ID。
-# 3.功能增强列表
+# 4.功能增强列表
 - 增加了对dubbo协议的支持，可同时提供http和dubbo两种服务；
 - fix官方原版读取DB失败的问题；
 - snowflake生成workid部分不在依赖zookeeper，改为依赖nacos。
 - 配置信息（如dubbo，mysql连接池，leaf自身配置等）改为从nacos配置中心读，不再读本地配置文件。
-# 4.ark-leaf服务如何启动？
+# 5.ark-leaf服务如何启动？
 > 1. 修改配置文件中config/application.properties，bootstrap.properties的spring.cloud.nacos.config.server-addr地址为nacos地址。
 > 2. 复制script文件夹下的ark-leaf-dev.properties到，nacos的public namespace下面的ark-leaf-dev.properties。
 > 3. 导入script文件下的sql到数据库。
 > 4. LeafServerApplication.java 启动服务。
-# 5.为什么leaf要改造使用nacos生成workerID？
+# 6.为什么leaf要改造使用nacos生成workerID？
 &emsp;&emsp;dubbo使用nacos注册中心，不需要为了生成workid而单独维护一套zookeeper。 
 
 <br/>其他生成workerID的方式：
