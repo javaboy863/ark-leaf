@@ -19,7 +19,7 @@
 > 3. 导入script文件下的sql到数据库。
 > 4. LeafServerApplication.java 启动服务。
 # 5.为什么leaf要改造使用nacos生成workerID？
-dubbo使用nacos注册中心，不需要为了生成workid而单独维护一套zookeeper。 
+&emsp;&emsp;dubbo使用nacos注册中心，不需要为了生成workid而单独维护一套zookeeper。 
 
 <br/>其他生成workerID的方式：
 > 1. 使用redis
